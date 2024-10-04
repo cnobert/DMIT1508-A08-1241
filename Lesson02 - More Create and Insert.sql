@@ -1,6 +1,9 @@
 drop table Grade;
+drop table Activity;
 drop table Student;
 drop table Course;
+drop table Club;
+
 create table Student (
     StudentID int not null constraint PK_Student primary key,
     FirstName varchar(50) not null,
@@ -56,3 +59,22 @@ values
 	(1, 'Magic'),
 	(2, 'Volleyball'),
 	(3, 'Web Developers');
+
+select ClubID, ClubName from Club;
+
+create table Activity (
+    StudentID int not null
+        constraint FK_Activity_StudentID_to_Student_StudentID
+        references Student(StudentID),
+    ClubID int not null
+        constraint FK_Activity_ClubID_To_Club_ClubID
+        references Club(ClubID),
+    Mark smallint null,
+    Constraint PK_Activity_StudentID_ClubID primary key (StudentID, ClubID)
+);
+
+insert into Activity (StudentID, ClubID)
+values
+	(1, 2),
+	(1, 3),
+	(2, 2);
