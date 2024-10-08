@@ -5,6 +5,7 @@ drop table if exists Customer;
 drop table if exists Route; --since Route has a foreign key that references Region, Route MUST be dropped before Region
 drop table if exists Region;
 
+--to create your indexes, find every foreign key, and create an index after the table that contains the foreign key
 
 --"identity" is a way to create primary key values
 --identity(1,1) means "start at the number 1, and increase by 1 each time"
@@ -39,6 +40,7 @@ create table Route
 	RegionID int not null
 		constraint FK_RegionID references Region(RegionID),
 )
+create nonclustered index IX_RegionID on Route(RegionID)
 
 create table Customer
 (
@@ -59,6 +61,7 @@ create table Customer
 	RouteID int not null
 		constraint FK_RouteID references Route(RouteID),
 )
+create nonclustered index IX_RouteID on Customer(RouteID)
 
 create table CustomerPaper
 (
@@ -70,3 +73,9 @@ create table CustomerPaper
 		constraint FK_DeliveryTypeID references DeliveryType(DeliveryTypeID),
 	constraint PK_CustomerPaper primary key (CustomerID, PaperID),
 )
+create nonclustered index IX_CustomerID on CustomerPaper(CustomerID)
+create nonclustered index IX_PaperID on CustomerPaper(PaperID)
+create nonclustered index IX_DeliveryTypeID on CustomerPaper(DeliveryTypeID)
+
+alter table Customer
+add nickname varchar(50) null
