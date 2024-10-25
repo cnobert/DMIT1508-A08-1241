@@ -1,0 +1,46 @@
+--get the first name and last name of every person in the school (staff and student)
+select FirstName, LastName
+from Student
+union
+select FirstName, LastName
+from Staff
+order by LastName desc, FirstName desc --or "asc" for ascending, but that's the default so usually don't have to use it
+
+--this is attempting (and failing) to achieve the above with a table join
+--instead of a union
+select Student.FirstName, Student.LastName, Staff.FirstName, Staff.LastName
+from student join registration on student.StudentID = registration.StudentID
+join Offering on registration.OfferingCode = offering.OfferingCode
+join Staff on Offering.StaffID = Staff.StaffID
+
+-----subqueries-----
+--select the names of the Deans
+select FirstName, LastName
+from Staff
+where PositionID = (select positionID from Position where PositionDescription = 'Instructor')
+
+--select the names of the Instructors and Program Chairs WITH A SUBQUERY
+select FirstName, LastName
+from Staff
+where PositionID in
+(
+    select positionID 
+    from Position 
+    where PositionDescription = 'Instructor'
+    or PositionDescription = 'Program Chair'
+)
+
+--select the names of the Instructors and Program Chairs WITHOUT A SUBQUERY
+select FirstName, LastName
+from staff join position on staff.positionID = position.positionID
+--where PositionDescription = 'Instructor' or PositionDescription = 'Program Chair'
+where PositionDescription in ('Instructor', 'Program Chair')
+
+--select the names of staff who are NOT Instructors or Program Chairs WITHOUT A SUBQUERY
+select FirstName, LastName
+from staff join position on staff.positionID = position.positionID
+where PositionDescription <> 'Instructor' and PositionDescription <> 'Program Chair'
+--where PositionDescription not in ('Instructor', 'Program Chair')
+
+select PositionDescription
+from Position
