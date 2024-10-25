@@ -42,5 +42,13 @@ from staff join position on staff.positionID = position.positionID
 where PositionDescription <> 'Instructor' and PositionDescription <> 'Program Chair'
 --where PositionDescription not in ('Instructor', 'Program Chair')
 
-select PositionDescription
-from Position
+select firstname + ' ' + lastname as 'Staff Name', PositionDescription
+from staff right outer join position on staff.positionID = POSITION.positionID
+
+--from the join exercises:
+
+--Select all the Club ID's and the Student full names that are in them
+
+select FirstName + ' ' + LastName as 'Student Name', ClubName
+from Student join Activity on Student.StudentID = Activity.StudentID
+join Club on Activity.ClubID = Club.ClubID
