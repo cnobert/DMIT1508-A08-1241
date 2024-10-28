@@ -1,0 +1,11 @@
+drop view if exists StudentRegistration
+go
+
+create view StudentRegistration
+as
+select FirstName, LastName
+from Student join Registration on Student.StudentID = Registration.StudentID
+
+select *
+from StudentRegistration
+
