@@ -9,3 +9,50 @@ from Student join Registration on Student.StudentID = Registration.StudentID
 select *
 from StudentRegistration
 
+--Create a view called ClubParticipation
+--that contains ClubID, ClubName and StudentID
+--for all Clubs that have ever been participated in
+drop view if exists ClubParticipation
+go
+create view ClubParticipation
+as
+select Club.ClubID, ClubName, StudentID
+from Club join Activity on Club.ClubID = Activity.ClubID
+
+select StudentID, ClubName, ClubId
+from ClubParticipation
+
+insert into Club (ClubID, ClubName)
+values ('Magic', 'The NAIT Magic Club')
+
+--Insert a payment with PaymentID 1001 for studentID 200495500.
+--The amount should be for the maximum payment of any that currently exists in the table.
+Insert into Payment
+	(PaymentID, Amount, PaymentTypeID, StudentID)
+Values
+( 1001,  (select max(Amount) from Payment), 4, 200495500)
+
+--update
+update course 
+set CourseCost = CourseCost * 1.5
+--where clause can go here
+
+update Course 
+set CourseCost = CourseCost * 0.9
+where CourseId = 'COMP1017'
+
+--the "like" keyword, with % at the beginning and end, means that the string between
+--the % signs can be anywhere in the word
+update Course 
+set CourseCost = CourseCost * 0.9
+where CourseId like '%DMIT%'
+
+--delete all the Clubs that have never been joined
+delete from Club
+where ClubID not in (select ClubID from Activity)
+
+select * 
+from Club
+where ClubID not in (select ClubID from Activity)
+
+select * from course
