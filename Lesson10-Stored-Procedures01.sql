@@ -1,5 +1,6 @@
 drop procedure if exists AllStudentNames
 go
+--returns every student name
 create procedure AllStudentNames 
 as 
 begin     
@@ -7,11 +8,15 @@ begin
     select FirstName, LastName     
     from Student 
 end 
-return 
+return
+go
+exec AllStudentNames
+
 go 
 
 drop procedure if exists HonourCourses
 go
+--output all courses that have an honours average (80%)
 create procedure HonourCourses
 as 
 begin     
@@ -22,6 +27,8 @@ begin
     having avg(Registration.Mark) > 80 
 end  
 return 
+
+exec HonourCourses 
 
 drop procedure if exists NotInDMIT2515
 go
