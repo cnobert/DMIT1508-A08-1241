@@ -18,7 +18,8 @@ go
 
 Create Table Position
 (
-	PositionID			tinyint			Not Null
+	PositionID			tinyint			identity(1,1)
+										Not Null
 										Constraint PK_Position_PositionID
 											Primary Key clustered,
 	PositionDescription	varchar(50)		Not Null
@@ -200,15 +201,15 @@ go
 
 -- Position
 Insert into Position
-	(PositionID, PositionDescription)
+	(PositionDescription)
 Values
-	(1, 'Dean'),
-	(7, 'Assistant Dean'),
-	(2, 'Program Chair'),
-	(3, 'Assistant Program Chair'),
-	(4, 'Instructor'),
-	(5, 'Office Administrator'),
-	(6, 'Technical Support Staff')
+	('Dean'),
+	('Assistant Dean'),
+	('Program Chair'),
+	('Assistant Program Chair'),
+	('Instructor'),
+	('Office Administrator'),
+	('Technical Support Staff')
 
 -- Staff
 Insert into Staff
