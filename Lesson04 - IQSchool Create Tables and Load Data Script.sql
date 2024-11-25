@@ -64,7 +64,8 @@ Create Table Student
 
 Create Table Course
 (
-	CourseId			char(8)			Not Null
+	CourseId			int				identity(1,1)
+										Not Null
 										Constraint PK_Course_CourseId
 											Primary Key clustered,
 	CourseName			varchar(40)		Not Null,	
@@ -135,7 +136,7 @@ Create Table Offering
 	StaffID				smallint		Not Null
 										Constraint fk_Offering_StaffID_To_Staff_StaffID
 											References Staff(StaffID),
-	CourseId			char(8)			Not Null
+	CourseId			int		Not Null
 										Constraint fk_Offering_CourseId_To_Course_CourseId
 											References Course(CourseId),
 	SemesterCode		char(5)			Not Null
@@ -278,24 +279,24 @@ Values
 
 -- Course
 Insert into Course
-	(CourseId, CourseName, CourseHours, MaxStudents, CourseCost)
+	(CourseName, CourseHours, MaxStudents, CourseCost)
 Values
-	('COMP1017', 'Web Design 1', 64, 4, 450),
-	('DMIT2028', 'Systems Analysis & Design II', 96, 3, 675),
-	('DMIT2504', 'Android Development', 96, 4, 675),
-	('CPSC1012', 'Programming Fundamentals', 96, 5, 675),
-	('DMIT1001', 'Communications in IT and New Media', 64, 4, 450),
-	('DMIT1518', 'IT System Administration', 64, 4, 450),
-	('DMIT2003', 'Quality Assurance and Software Testing', 64, 4, 450),
-	('DMIT2015', 'Enterprise Application Development', 96, 5, 675),
-	('PHYS2446', 'Math & Physics', 80, 5, 600),
-	('DMIT2023', 'Microsoft Windows Server', 64, 5, 450),
-	('ANAP1525', 'Systems Analysis & Design 1', 96, 5, 675),
-	('DMIT1508', 'Database Fundamentals', 96, 3, 675),
-	('DMIT1514', 'Game Programming Essentials', 96, 4, 675),
-	('DMIT2027', 'DMIT2027 Project Management', 64, 2, 450),
-	('DMIT2515', 'Securing MS Active Directory', 64, 5, 450),
-	('DMIT2590', 'Capstone Project', 192, 5, 1575)
+	('Web Design 1', 64, 4, 450),
+	('Systems Analysis & Design II', 96, 3, 675),
+	('Android Development', 96, 4, 675),
+	('Programming Fundamentals', 96, 5, 675),
+	( 'Communications in IT and New Media', 64, 4, 450),
+	( 'IT System Administration', 64, 4, 450),
+	( 'Quality Assurance and Software Testing', 64, 4, 450),
+	( 'Enterprise Application Development', 96, 5, 675),
+	( 'Math & Physics', 80, 5, 600),
+	('Microsoft Windows Server', 64, 5, 450),
+	( 'Systems Analysis & Design 1', 96, 5, 675),
+	('Database Fundamentals', 96, 3, 675),
+	('Game Programming Essentials', 96, 4, 675),
+	( 'DMIT2027 Project Management', 64, 2, 450),
+	('Securing MS Active Directory', 64, 5, 450),
+	('Capstone Project', 192, 5, 1575)
 
 -- Semester
 Insert into Semester
@@ -312,21 +313,21 @@ Values
 -- Offering
 Insert into Offering (OfferingCode, StaffID, CourseId, SemesterCode)
 Values
-	(1000, 6, 'DMIT1514', 'A100'), 
-	(1001, 6, 'DMIT1508', 'A200'), 
-	(1002, 6, 'CPSC1012', 'A300'), 
-	(1003, 5, 'DMIT1001', 'A400'), 
-	(1004, 5, 'DMIT1001', 'A500'), 
-	(1005, 5, 'ANAP1525', 'A600'), 
-	(1006, 5, 'DMIT2015', 'A100'), 
-	(1007, 5, 'PHYS2446', 'A200'), 
-	(1008, 5, 'DMIT2515', 'A300'), 
-	(1009, 4, 'DMIT2028', 'A400'), 
-	(1010, 4, 'DMIT2515', 'A500'), 
-	(1011, 4, 'DMIT2504', 'A600'), 
-	(1012, 4, 'DMIT2003', 'A100'), 
-	(1013, 4, 'DMIT1518', 'A200'), 
-	(1014, 4, 'DMIT2590', 'A300')
+	(1000, 6, 1, 'A100'), 
+	(1001, 6, 2, 'A200'), 
+	(1002, 6, 3, 'A300'), 
+	(1003, 5, 4, 'A400'), 
+	(1004, 5, 5, 'A500'), 
+	(1005, 5, 6, 'A600'), 
+	(1006, 5, 7, 'A100'), 
+	(1007, 5, 8, 'A200'), 
+	(1008, 5, 9, 'A300'), 
+	(1009, 4, 10, 'A400'), 
+	(1010, 4, 11, 'A500'), 
+	(1011, 4, 12, 'A600'), 
+	(1012, 4, 13, 'A100'), 
+	(1013, 4, 14, 'A200'), 
+	(1014, 4, 15, 'A300')
 
 -- Registration
 Insert into Registration
