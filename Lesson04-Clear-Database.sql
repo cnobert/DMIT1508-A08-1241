@@ -1,34 +1,19 @@
-use cnobert;
 
--- Drop all views
-DECLARE @viewName NVARCHAR(256)
-DECLARE viewCursor CURSOR FOR
-SELECT name FROM sys.objects WHERE type = 'V'
+DECLARE @sql NVARCHAR(MAX) = N'';
 
-OPEN viewCursor
-FETCH NEXT FROM viewCursor INTO @viewName
-WHILE @@FETCH_STATUS = 0
-BEGIN
-    EXEC('DROP VIEW [' + @viewName + ']')
-    FETCH NEXT FROM viewCursor INTO @viewName
-END
-CLOSE viewCursor
-DEALLOCATE viewCursor
+-- Step 2.1: Drop all foreign key constraints
+SELECT @sql += 'ALTER TABLE [' + SCHEMA_NAME(fk.schema_id) + '].[' + OBJECT_NAME(fk.parent_object_id) + '] DROP CONSTRAINT [' + fk.name + '];' + CHAR(13)
+FROM sys.foreign_keys AS fk;
 
--- Drop all functions
-DECLARE @functionName NVARCHAR(256)
-DECLARE functionCursor CURSOR FOR
-SELECT name FROM sys.objects WHERE type IN ('FN', 'IF', 'TF')
+EXEC sp_executesql @sql;
 
-OPEN functionCursor
-FETCH NEXT FROM functionCursor INTO @functionName
-WHILE @@FETCH_STATUS = 0
-BEGIN
-    EXEC('DROP FUNCTION [' + @functionName + ']')
-    FETCH NEXT FROM functionCursor INTO @functionName
-END
-CLOSE functionCursor
-DEALLOCATE functionCursor
+-- Step 2.2: Drop all tables
+SET @sql = N'';
+SELECT @sql += 'DROP TABLE [' + SCHEMA_NAME(schema_id) + '].[' + name + '];' + CHAR(13)
+FROM sys.tables;
+
+EXEC sp_executesql @sql;
+go
 
 -- Drop all procedures
 DECLARE @procName NVARCHAR(256)
@@ -44,18 +29,3 @@ BEGIN
 END
 CLOSE procCursor
 DEALLOCATE procCursor
-
--- Drop all tables
-DECLARE @tableName NVARCHAR(256)
-DECLARE tableCursor CURSOR FOR
-SELECT name FROM sys.objects WHERE type = 'U'
-
-OPEN tableCursor
-FETCH NEXT FROM tableCursor INTO @tableName
-WHILE @@FETCH_STATUS = 0
-BEGIN
-    EXEC('DROP TABLE [' + @tableName + ']')
-    FETCH NEXT FROM tableCursor INTO @tableName
-END
-CLOSE tableCursor
-DEALLOCATE tableCursor
