@@ -82,6 +82,44 @@ BEGIN
     )
 END
 update Registration
-set mark = 99
+set mark = 97
 where StudentID = 200978500 and OfferingCode = 1000
 select * from MarkChanges
+--4. In order to be fair to all students, a student an only belong to a maximum of 3 clubs.
+--Create a trigger to enforce this rule.
+go
+drop trigger if exists TR_4;
+GO
+create trigger TR_4
+on Activity
+for insert
+AS
+if @@rowcount > 0
+BEGIN
+    if exists
+    (   
+        --EITHER OF THE TECHNIQUES BELOW WILL WORK
+        --select count(*)
+        --from Activity join inserted on Activity.StudentID = inserted.StudentID
+        --group by Activity.StudentID
+        --having count(*) > 3 
+
+        select count(*)
+        from Activity, inserted
+        where Activity.StudentID = inserted.StudentID
+        group by Activity.StudentID
+        having count(*) > 3
+    )
+    BEGIN
+        ROLLBACK TRANSACTION
+        RAISERROR('A student may only belong to a maximum 3 clubs. Insert blocked.', 16, 1)
+    END
+END
+select * from Activity where StudentID = 199899200
+
+Insert into Activity (StudentID, ClubID) Values	(199899200, 'DBTG')
+Insert into Activity (StudentID, ClubID) Values	(199899200, 'CIPS')
+Insert into Activity (StudentID, ClubID) Values	(199899200, 'ACM')
+
+Insert into Activity (StudentID, ClubID) Values	(200312345, 'DBTG')
+
